@@ -8,4 +8,4 @@ Distributed under the terms of the MIT license, Kivy is free and open source sof
 KivyCalc
 --------------
 
-A simple calculator implemented with Kivy
+A simple calculator written in Kivy
