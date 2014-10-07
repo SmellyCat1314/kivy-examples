@@ -1,7 +1,7 @@
 kivy-examples
 =============
 
-My idea is to add to this repository examples I created written in Kivy. 
+I will add to this repository examples I created in Kivy. 
 
 What is Kivy?
 
