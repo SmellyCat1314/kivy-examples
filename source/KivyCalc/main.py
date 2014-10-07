@@ -1,57 +1,69 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.uix.label import Label
 from math import sqrt
+from kivy.properties import NumericProperty, StringProperty
 
-class Display(Label):
-    def __init__(self, **kwargs):
-        super(Display, self).__init__(**kwargs)
-        self.operand = ''
-        self.func = '' 
 
-    def num(self, s):
-        if int(s) == s:
-            return str(int(s))
+class MyCalc(Widget):
+    operand = NumericProperty(0)
+    func = StringProperty('')
+
+    @property
+    def d_text(self):
+        return self.display.text
+
+    @d_text.setter
+    def d_text(self, value):
+        if value == '':
+            value = '0'
+        self.display.text = value
+    
+    @property
+    def d_float(self):
+        return float(self.display.text)
+
+    @d_float.setter
+    def d_float(self, value):
+        if int(value) == value:
+            self.display.text = str(int(value))
         else:
-            return str(s)
+            self.display.text = str(value)
 
     def key(self, key):
-        if self.func != '' and self.operand == '':
-            self.operand = self.text
-            self.text = ''      
-        self.text = (self.text + key).lstrip('0')
-
+        if self.func != '':
+            self.operand = self.d_float
+            self.d_text = key
+        else:
+            self.d_text = (self.d_text + key).lstrip('0')
+        
     def function(self, func):      
-        if func == '=' and self.operand != "" and self.text != "":
+        if func == '=' and self.operand != 0 and self.d_text != "":
             if self.func == '+':
-                self.text = self.num(float(self.operand) + float(self.text))
+                self.d_float = self.operand + self.d_float
             if self.func == '-':
-                self.text = self.num(float(self.operand) - float(self.text))
+                self.d_float = self.operand - self.d_float
             if self.func == '/':
-                self.text = self.num(float(self.operand) / float(self.text))
+                self.d_float = self.operand / self.d_float
             if self.func == '*':
-                self.text = self.num(float(self.operand) * float(self.text))
+                self.d_float = self.operand * self.d_float
             if self.func == '%':
-                 self.text = self.num(float(self.operand) * (100/float(self.text)))
-            self.operand = ''
+                 self.d_float = self.operand * (100/self.d_float)
+            self.operand = 0
             self.func = ''
         elif func == '+-':
-            if self.text != "":
-                self.text = self.num(-1*float(self.text))
+            self.d_float = -1*self.d_float
         elif func == 'sqrt':
-            if self.text != "":
-                self.text = self.num(sqrt(float(self.text))) 
+            self.d_float = sqrt(self.d_float)
         else:
             self.func = func
 
     def back(self):
-        self.text = self.text[:-1]
+        self.d_text = self.d_text[:-1]
 
     def clear(self):
-        self.text = '0'
-    
-class MyCalc(Widget):
-    pass
+        self.d_float= 0
+        self.operand = 0
+        self.func = ''
    
 class CalcApp(App):
     def build(self):
