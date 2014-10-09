@@ -35,9 +35,9 @@ class MyCalc(Widget):
             self.d_text = key
         else:
             self.d_text = (self.d_text + key).lstrip('0')
-        
+
     def function(self, func):      
-        if func == '=' and self.operand != 0 and self.d_text != "":
+        if func == '=' and self.d_text != "":
             if self.func == '+':
                 self.d_float = self.operand + self.d_float
             if self.func == '-':
@@ -51,7 +51,7 @@ class MyCalc(Widget):
             self.operand = 0
             self.func = ''
         elif func == '+-':
-            self.d_float = -1*self.d_float
+            self.d_float = -self.d_float
         elif func == 'sqrt':
             self.d_float = sqrt(self.d_float)
         else:
